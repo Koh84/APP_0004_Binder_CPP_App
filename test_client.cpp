@@ -12,6 +12,8 @@
 #include <cutils/properties.h>
 #include <utils/Log.h>
 
+#include "IHelloService.h"
+
 using namespace android;
 
 /*	./test_client hello 		*/

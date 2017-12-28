@@ -4,6 +4,8 @@
 
 //BnHelloService : IHelloService, BBinder
 //BpHelloService : IHelloService, BpRefBase
+namespace android {
+
 class BpHelloService: public BpInterface<IHelloService>
 {
 public:
@@ -33,3 +35,4 @@ public:
 };
 
 IMPLEMENT_META_INTERFACE(HelloService, "android.media.IHelloService");
+}

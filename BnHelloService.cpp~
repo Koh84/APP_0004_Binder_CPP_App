@@ -1,8 +1,9 @@
 /* refer to frameworks\av\media\libmedia\IMediaPlayerService.cpp */
+#define LOG_TAG "HelloService"
 
 #include "IHelloService.h"
 
-#define LOG_TAG "HelloService"
+
 
 namespace android {
 

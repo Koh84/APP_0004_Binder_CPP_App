@@ -12,6 +12,8 @@
 #include <cutils/properties.h>
 #include <utils/Log.h>
 
+#include "IHelloService.h"
+
 using namespace android;
 
 void main(void)
@@ -26,7 +28,7 @@ void main(void)
 	/*Get BpServiceManager*/
 	/*This will expose functions such as addService()*/
         sp<IServiceManager> sm = defaultServiceManager();
-	sm->addService(String16("hello"));
+	sm->addService(String16("hello"), new BnHelloService());
 
 	/*loop*/
         ProcessState::self()->startThreadPool();
