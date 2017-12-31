@@ -1,6 +1,6 @@
 /* refer to frameworks\av\media\mediaserver\Main_mediaserver.cpp */
 
-#define LOG_TAG "HelloService"
+#define LOG_TAG "TestService"
 //#define LOG_NDEBUG 0
 
 #include <fcntl.h>
@@ -13,6 +13,7 @@
 #include <utils/Log.h>
 
 #include "IHelloService.h"
+#include "IGoodbyeService.h"
 
 using namespace android;
 
@@ -29,6 +30,7 @@ int main(void)
 	/*This will expose functions such as addService()*/
         sp<IServiceManager> sm = defaultServiceManager();
 	sm->addService(String16("hello"), new BnHelloService());
+	sm->addService(String16("goodbye"), new BnGoodbyeService());
 
 	/*loop*/
         ProcessState::self()->startThreadPool();

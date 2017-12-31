@@ -1,6 +1,6 @@
 /* refer to frameworks\av\media\mediaserver\Main_mediaserver.cpp */
 
-#define LOG_TAG "HelloService"
+#define LOG_TAG "TestService"
 //#define LOG_NDEBUG 0
 
 #include <fcntl.h>
@@ -13,11 +13,12 @@
 #include <utils/Log.h>
 
 #include "IHelloService.h"
+#include "IGoodbyeService.h"
 
 using namespace android;
 
-/*	./test_client hello 		*/
-/* 	./test_client hello <name>	*/
+/*	./test_client <hello|goodbye>		*/
+/* 	./test_client <hello|goodbye> <name>	*/
 int main(int argc, char **argv)
 {
 	int cnt;
@@ -38,26 +39,53 @@ int main(int argc, char **argv)
 	/*This will expose functions such as getService()*/
         sp<IServiceManager> sm = defaultServiceManager();
 
-	sp<IBinder> binder = sm->getService(String16("hello"));
-
-	if(binder == 0)
+	if(strcmp(argv[1],"hello") == 0)
 	{
-		ALOGI("Can't get hello service\n");
-		return -1;
-	}
+		sp<IBinder> binder = sm->getService(String16("hello"));
 
-    	sp<IHelloService> service = interface_cast<IHelloService>(binder);
+		if(binder == 0)
+		{
+			ALOGI("Can't get hello service\n");
+			return -1;
+		}
 
-	/*User functions in service*/	
-	if(argc < 3)
-	{
-		service->sayhello();
-		ALOGI("client call sayhello\n");
+			sp<IHelloService> service = interface_cast<IHelloService>(binder);
+
+		/*User functions in service*/	
+		if(argc < 3)
+		{
+			service->sayhello();
+			ALOGI("client call sayhello\n");
+		}
+		else
+		{
+			cnt = service->sayhello_to(argv[2]);
+			ALOGI("client call sayhello_to, cnt = %d\n", cnt);
+		}
 	}
 	else
 	{
-		cnt = service->sayhello_to(argv[2]);
-		ALOGI("client call sayhello_to, cnt = %d\n", cnt);
+		sp<IBinder> binder = sm->getService(String16("goodbye"));
+
+		if(binder == 0)
+		{
+			ALOGI("Can't get goodbye service\n");
+			return -1;
+		}
+
+			sp<IGoodbyeService> service = interface_cast<IGoodbyeService>(binder);
+
+		/*User functions in service*/	
+		if(argc < 3)
+		{
+			service->saygoodbye();
+			ALOGI("client call saygoodbye\n");
+		}
+		else
+		{
+			cnt = service->saygoodbye_to(argv[2]);
+			ALOGI("client call saygoodbye_to, cnt = %d\n", cnt);
+		}
 	}
 
 	return 0;
