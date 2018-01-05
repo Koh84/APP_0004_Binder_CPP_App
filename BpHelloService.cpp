@@ -19,18 +19,27 @@ public:
 		/*send data package*/
 		Parcel data, reply;
 		data.writeInt32(0);
+		data.writeString16(String16("IHelloService"));
+
 		remote()->transact(HELLO_SVR_CMD_SAYHELLO, data, &reply);
 	}
 	int sayhello_to(const char *name ){
 		/*construct data package*/
 		/*send data package*/
 		Parcel data, reply;
+		int exception;
+
 		data.writeInt32(0);
+		data.writeString16(String16("IHelloService"));
+
 		data.writeString16(String16(name));
 
 		remote()->transact(HELLO_SVR_CMD_SAYHELLO_TO, data, &reply);
-
-		return reply.readInt32();
+		exception = reply.readInt32();
+		if(exception)
+			return -1;
+		else
+			return reply.readInt32();
 	}	
 };
 
