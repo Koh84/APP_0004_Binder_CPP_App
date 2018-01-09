@@ -80,12 +80,25 @@ int main(int argc, char **argv)
 
 		/*User functions in service*/	
 		int fd = service->get_fd();
-		lseek(fd, 0, SEEK_SET); /* allow us to re-read the data in 1.txt. if not the pointer will point to end of string, we can see it anymore */
-		char buf[500];
-		int len = read(fd, buf, 500);
-		buf[len] = '\0';	
+
 		ALOGI("client call get_fd = %d\n", fd);
-		ALOGI("client read file = %s\n", buf);
+
+		char buf[500];
+		int len;
+		int cnt = 0;
+		
+		while(1)
+		{
+			len = sprintf(buf, "Hello, test Server, cnt = %d\n", cnt++);
+			write(fd, buf, len);
+
+			lseek(fd, 0, SEEK_SET); /* allow us to re-read the data in 1.txt. if not the pointer will point to end of string, we can see it anymore */
+
+			len = read(fd, buf, 500);
+			buf[len] = '\0';	
+			ALOGI("client read file = %s\n", buf);
+			sleep(5);
+		}
 	}
 	else
 	{
