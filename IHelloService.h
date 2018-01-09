@@ -12,6 +12,7 @@
 
 #define HELLO_SVR_CMD_SAYHELLO 1
 #define HELLO_SVR_CMD_SAYHELLO_TO 2
+#define HELLO_SVR_CMD_GET_FD 3
 
 namespace android {
 
@@ -21,6 +22,7 @@ public:
 	DECLARE_META_INTERFACE(HelloService);
 	virtual void sayhello(void) = 0;
 	virtual int sayhello_to(const char *name ) = 0;	
+	virtual int get_fd(void) = 0;	
 };
 
 // ----------------------------------------------------------------------------
@@ -29,6 +31,10 @@ public:
 //BnHelloService : IHelloService, BBinder
 class BnHelloService: public BnInterface<IHelloService>
 {
+
+private:
+	int fd;
+
 public:
 	virtual status_t    onTransact( uint32_t code,
                                     const Parcel& data,
@@ -36,6 +42,10 @@ public:
                                     uint32_t flags = 0);
 	void sayhello(void);
 	int sayhello_to(const char *name );	
+	int get_fd(void);
+
+	BnHelloService();
+	BnHelloService(int fd);
 };
 
 };
